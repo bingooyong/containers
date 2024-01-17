@@ -32,4 +32,4 @@ jobs:
         tags: luoye0602/openresty:$(date +%s)
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
-        cache-to: type=gha,mode=max      
+        cache-to: type=gha,mode=max
