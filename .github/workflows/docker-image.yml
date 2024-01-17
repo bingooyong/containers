@@ -50,7 +50,8 @@ jobs:
       with:
         context: openresty
         push: true
-        tags: luoye0602/openresty:$(date +%s)
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/openresty:latest        
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
