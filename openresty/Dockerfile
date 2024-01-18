@@ -41,6 +41,18 @@ RUN cd openresty-${RESTY_VERSION} && ./configure -j$(grep -c ^processor /proc/cp
     --with-http_v2_module \
     && gmake && gmake install
 
+
+# add lua-zlib
+RUN cd zlib-1.3 && make && make install \ 
+    && install_packages cmake \
+    && cd /app \
+    && curl -SsLf https://github.com/brimworks/lua-zlib/archive/master.zip -O \
+    && unzip master.zip \
+    && cd lua-zlib-master \
+    && cmake -DLUA_INCLUDE_DIR=/opt/bitnami/openresty/luajit/include/luajit-2.1 -DLUA_LIBRARIES=/opt/bitnami/openresty/luajit/lib -DUSE_LUAJIT=ON -DUSE_LUA=OFF \
+    && make \
+    && cp zlib.so /opt/bitnami/openresty/lualib/zlib.so
+
 RUN apt-get update && apt-get upgrade -y && \
     apt-get clean && rm -rf /var/lib/apt/lists /var/cache/apt/archives
 RUN chmod g+rwX /opt/bitnami
@@ -53,6 +65,6 @@ ENV APP_VERSION=${RESTY_VERSION} \
     PATH="/opt/bitnami/openresty/bin:/opt/bitnami/openresty/luajit/bin:$PATH"
 
 WORKDIR /app
-USER 1001
+USER root
 ENTRYPOINT [ "/opt/bitnami/scripts/openresty/entrypoint.sh" ]
 CMD [ "/opt/bitnami/scripts/openresty/run.sh" ]
