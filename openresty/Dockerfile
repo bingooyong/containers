@@ -4,6 +4,7 @@ FROM docker.io/bitnami/minideb:bullseye as builder
 ARG TARGETARCH
 ARG RESTY_VERSION
 ARG RESTY_OPENSSL_VERSION
+ARG RESTY_ZLIB_VERSION
 
 LABEL maintainer="bingooyong@github.io"
 
@@ -14,7 +15,8 @@ ENV HOME="/home/openresty" \
     OS_FLAVOUR="debian-11" \
     OS_NAME="linux" \
     RESTY_VERSION="1.21.4.3" \
-    RESTY_OPENSSL_VERSION="1.1.1q"
+    RESTY_OPENSSL_VERSION="1.1.1q" \
+    RESTY_ZLIB_VERSION="1.3.1"
 
 COPY prebuildfs /
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -25,7 +27,7 @@ WORKDIR /app
 
 RUN wget --no-check-certificate https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
 && wget https://openresty.org/download/openresty-${RESTY_VERSION}.tar.gz \
-&& wget https://www.zlib.net/zlib-1.3.tar.gz \
+&& wget https://www.zlib.net/zlib-${RESTY_ZLIB_VERSION}.tar.gz \
 && wget --no-check-certificate https://cytranet.dl.sourceforge.net/project/pcre/pcre/8.45/pcre-8.45.tar.bz2 \
 && tar xf openresty-${RESTY_VERSION}.tar.gz && tar xf openssl-${RESTY_OPENSSL_VERSION}.tar.gz && tar xf pcre-8.45.tar.bz2 && tar xf zlib-1.3.tar.gz
 
@@ -46,7 +48,7 @@ RUN cd openresty-${RESTY_VERSION} && ./configure -j$(grep -c ^processor /proc/cp
 # https://github.com/brimworks/lua-zlib/archive/master.zip
 # https://github.com/bingoohuang/lua-zlibx/archive/master.zip
 # add lua-zlib
-RUN cd zlib-1.3 && make && make install \ 
+RUN cd zlib-${RESTY_ZLIB_VERSION} && make && make install \ 
     && install_packages cmake \
     && cd /app \
     && curl -SsLf https://github.com/bingoohuang/lua-zlibx/archive/master.zip -O \
