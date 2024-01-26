@@ -41,14 +41,15 @@ RUN cd openresty-${RESTY_VERSION} && ./configure -j$(grep -c ^processor /proc/cp
     --with-http_v2_module \
     && gmake && gmake install
 
-
+# https://github.com/brimworks/lua-zlib/archive/master.zip
+# https://github.com/bingoohuang/lua-zlibx/archive/master.zip
 # add lua-zlib
 RUN cd zlib-1.3 && make && make install \ 
     && install_packages cmake \
     && cd /app \
-    && curl -SsLf https://github.com/brimworks/lua-zlib/archive/master.zip -O \
+    && curl -SsLf https://github.com/bingoohuang/lua-zlibx/archive/master.zip -O \
     && unzip master.zip \
-    && cd lua-zlib-master \
+    && cd lua-zlibx-master \
     && cmake -DLUA_INCLUDE_DIR=/opt/bitnami/openresty/luajit/include/luajit-2.1 -DLUA_LIBRARIES=/opt/bitnami/openresty/luajit/lib -DUSE_LUAJIT=ON -DUSE_LUA=OFF \
     && make \
     && cp zlib.so /opt/bitnami/openresty/lualib/zlib.so
