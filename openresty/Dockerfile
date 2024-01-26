@@ -29,7 +29,7 @@ RUN wget --no-check-certificate https://www.openssl.org/source/openssl-${RESTY_O
 && wget https://openresty.org/download/openresty-${RESTY_VERSION}.tar.gz \
 && wget https://www.zlib.net/zlib-${RESTY_ZLIB_VERSION}.tar.gz \
 && wget --no-check-certificate https://cytranet.dl.sourceforge.net/project/pcre/pcre/8.45/pcre-8.45.tar.bz2 \
-&& tar xf openresty-${RESTY_VERSION}.tar.gz && tar xf openssl-${RESTY_OPENSSL_VERSION}.tar.gz && tar xf pcre-8.45.tar.bz2 && tar xf zlib-1.3.tar.gz
+&& tar xf openresty-${RESTY_VERSION}.tar.gz && tar xf openssl-${RESTY_OPENSSL_VERSION}.tar.gz && tar xf pcre-8.45.tar.bz2 && tar xf zlib-${RESTY_ZLIB_VERSION}.tar.gz
 
 RUN cd openresty-${RESTY_VERSION} && ./configure -j$(grep -c ^processor /proc/cpuinfo) \
     --prefix=/opt/bitnami/openresty \
