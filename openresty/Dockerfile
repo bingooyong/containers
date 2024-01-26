@@ -43,7 +43,7 @@ RUN cd openresty-${RESTY_VERSION} && ./configure -j$(grep -c ^processor /proc/cp
     --with-http_ssl_module \
     --with-http_stub_status_module \
     --with-http_v2_module \
-    && gmake -j$(grep -c ^processor /proc/cpuinfo) && gmake install
+    && gmake && gmake install
 
 # https://github.com/brimworks/lua-zlib/archive/master.zip
 # https://github.com/bingoohuang/lua-zlibx/archive/master.zip
