@@ -36,14 +36,14 @@ RUN cd openresty-${RESTY_VERSION} && ./configure -j$(grep -c ^processor /proc/cp
     --with-luajit=$LUAROOT \
     --with-pcre-jit \
     --with-pcre=../pcre-8.45 \
-    --with-zlib=../zlib-1.3 \
+    --with-zlib=../zlib-${RESTY_ZLIB_VERSION} \
     --with-openssl=../openssl-${RESTY_OPENSSL_VERSION} \
     --without-http_redis2_module \
     --with-http_realip_module \
     --with-http_ssl_module \
     --with-http_stub_status_module \
     --with-http_v2_module \
-    && gmake && gmake install
+    && gmake -j$(grep -c ^processor /proc/cpuinfo) && gmake install
 
 # https://github.com/brimworks/lua-zlib/archive/master.zip
 # https://github.com/bingoohuang/lua-zlibx/archive/master.zip
