@@ -2,18 +2,19 @@
 FROM docker.io/bitnami/minideb:bullseye as builder
 
 ARG TARGETARCH
+ARG RESTY_VERSION
+ARG RESTY_OPENSSL_VERSION
 
 LABEL maintainer="bingooyong@github.io"
-
-ARG RESTY_VERSION="1.21.4.3"
-ARG RESTY_OPENSSL_VERSION="1.1.1q"
 
 # Docker Build Arguments
 
 ENV HOME="/home/openresty" \
     OS_ARCH="${TARGETARCH:-amd64}" \
     OS_FLAVOUR="debian-11" \
-    OS_NAME="linux"
+    OS_NAME="linux" \
+    RESTY_VERSION="1.21.4.3" \
+    RESTY_OPENSSL_VERSION="1.1.1q"
 
 COPY prebuildfs /
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -21,6 +22,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN install_packages ca-certificates curl libbrotli1 libbsd0 libcrypt1 libdeflate0 libexpat1 libfontconfig1 libfreetype6 libgcc-s1 libgcrypt20 libgd3 libgeoip1 libgpg-error0 libicu67 libjbig0 libjpeg62-turbo liblzma5 libmd0 libpcre3 libpng16-16 libssl1.1 libstdc++6 libtiff5 libuuid1 libwebp6 libx11-6 libxau6 libxcb1 libxdmcp6 libxml2 libxpm4 libxslt1.1 libzstd1 perl procps zlib1g wget build-essential unzip net-tools
 RUN mkdir -p /app
 WORKDIR /app
+
 RUN wget --no-check-certificate https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
 && wget https://openresty.org/download/openresty-${RESTY_VERSION}.tar.gz \
 && wget https://www.zlib.net/zlib-1.3.tar.gz \
