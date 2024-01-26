@@ -62,19 +62,6 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get clean && rm -rf /var/lib/apt/lists /var/cache/apt/archives
 RUN chmod g+rwX /opt/bitnami
 
-COPY rootfs /
-RUN /opt/bitnami/scripts/openresty/postunpack.sh
-
-ENV APP_VERSION=${RESTY_VERSION} \
-    BITNAMI_APP_NAME="openresty" \
-    PATH="/opt/bitnami/openresty/bin:/opt/bitnami/openresty/luajit/bin:$PATH"
-
-WORKDIR /app
-USER root
-ENTRYPOINT [ "/opt/bitnami/scripts/openresty/entrypoint.sh" ]
-CMD [ "/opt/bitnami/scripts/openresty/run.sh" ]
-
-
 #########################################
 FROM docker.io/bitnami/minideb:bullseye
 USER root
